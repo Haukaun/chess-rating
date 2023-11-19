@@ -1,12 +1,60 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../supabase/supabaseClient';
+import { Profile } from '../interfaces/profile';
+import { SheetDemo } from '../components/editUserSheet';
 
-function Profile() {
+function ProfilePage() {
+    const [profile, setProfile] = useState<Profile>();
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            const session = supabase.auth.getSession();
+
+            if (session) {
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', (await session).data.session?.user.id)
+                    .single();
+
+                if (error) {
+                    console.error('Error fetching profile:', error);
+                } else {
+                    setProfile(data);
+                }
+            }
+
+            setLoading(false);
+        };
+
+        fetchProfile();
+    }, []);
+
+    if (loading) {
+        return <div>Loading profile...</div>;
+    }
+
+    if (!profile) {
+        return <div>No profile data found</div>;
+    }
+
     return (
-        <div className='w-full'>
+        <main className="flex flex-col items-center justify-start pt-10 w-full pl-[15rem]">
 
-            <div>Profile</div>
-        </div>
-    )
+            <div className='w-[10rem]'>
+                <img src="./logo.png" className='object-fill rounded-full border' alt="" />
+            </div>
+            <div className='pt-10 text-2xl text-center flex flex-col gap-2'>
+                <div>ELO: {profile.elo}</div>
+                <div>{profile.username}</div>
+                <div>{profile.email}</div>
+            </div>
+            <div className='pt-5'>
+                <SheetDemo userId={profile.id} />
+            </div>
+        </main>
+    );
 }
 
-export default Profile
+export default ProfilePage;

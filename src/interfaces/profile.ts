@@ -1,7 +1,7 @@
 /** @format */
 
 export interface Profile {
-  id: number;
+  id: string;
   username: string;
   email: string;
   elo: number;

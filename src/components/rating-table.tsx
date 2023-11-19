@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "../shadcn/components/ui/table"
 import { supabase } from "../supabase/supabaseClient";
-import { Profile } from "../interfaces/user";
+import { Profile } from "../interfaces/profile";
 
 export default function RatingTable() {
     const [players, setPlayers] = useState<Profile[]>([]);
@@ -24,12 +24,12 @@ export default function RatingTable() {
     }, []);
 
     return (
-        <div className="border rounded-lg w-[600px]">
+        <div className="border rounded-lg w-full">
             <div className="relative w-full overflow-auto">
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="w-[100px]">Player Name</TableHead>
+                            <TableHead className="w-[10rem]">Player Name</TableHead>
                             <TableHead>Elo Rating</TableHead>
                             <TableHead>Rank</TableHead>
                         </TableRow>
@@ -37,7 +37,7 @@ export default function RatingTable() {
                     <TableBody>
                         {players.map((user, index) => (
                             <TableRow key={user.id}>
-                                <TableCell className="font-medium">{user.email}</TableCell>
+                                <TableCell className="font-medium">{user.username}</TableCell>
                                 <TableCell>{user.elo}</TableCell>
                                 <TableCell>{index + 1}</TableCell>
                             </TableRow>

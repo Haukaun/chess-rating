@@ -7,15 +7,19 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import GameHistory from "./pages/GameHistory";
 import Tournament from "./pages/Tournament";
 import Profile from "./pages/Profile";
+import LeaderBoard from "./pages/LeaderBoard";
 
 function App() {
 
 	const [session, setSession] = useState<Session | null>(null);
 
+
+
 	useEffect(() => {
 		supabase.auth.getSession().then(({ data: { session } }) => {
 			setSession(session);
 		});
+
 		const {
 			data: { subscription },
 		} = supabase.auth.onAuthStateChange((_event, session) => {
@@ -25,7 +29,7 @@ function App() {
 	}, []);
 
 
-	if (!session) {
+	if (!session || !session.user.email?.match(/^[a-zA-Z0-9._%+-]+@safebase\.no$/)) {
 		return (
 			<div className="flex w-full items-center justify-center min-h-screen">
 				<div className="bg-form rounded-md w-full max-w-md p-10 shadow-2xl">
@@ -70,6 +74,7 @@ function App() {
 				<div className="flex flex-row">
 					<DashBoard />
 					<Routes>
+						<Route path="/leaderboard" element={<LeaderBoard />} />
 						<Route path="/game-history" element={<GameHistory />} />
 						<Route path="/tournament" element={<Tournament />} />
 						<Route path="/profile" element={<Profile />} />
