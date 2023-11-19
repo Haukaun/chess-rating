@@ -27,7 +27,7 @@ function logOut() {
 function DashBoard() {
     return (
         <main className="">
-            <aside className="bg-secondary max-w-[20rem] w-full min-h-screen p-5 flex flex-col">
+            <aside className="bg-secondary max-w-[15rem] w-full min-h-screen p-5 flex flex-col fixed">
                 <a href="/game-history">
                     <img src="./logo.png" className='w-[10rem] max-w-[10rem] pb-10' alt="Logo" />
                 </a>
