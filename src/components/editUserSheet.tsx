@@ -27,7 +27,6 @@ export function SheetDemo(props: { userId: string }) {
 
             setProfile(data);
         }
-        console.log(profile)
         fetchProfile();
     }, []);
 
