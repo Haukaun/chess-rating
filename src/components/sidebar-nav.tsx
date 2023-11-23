@@ -30,7 +30,7 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
                         cn(
                             buttonVariants({ variant: "link" }),
                             isActive
-                                ? "bg-slate-200 text-slate-900 underline"
+                                ? "bg-slate-200 text-blue-500 underline"
                                 : "hover:bg-slate-200 hover:underline",
                             "justify-start flex-none"
                         )

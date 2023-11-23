@@ -41,18 +41,24 @@ function ProfilePage() {
 
     return (
         <main className="flex flex-col items-center justify-start pt-10 w-full pl-[15rem]">
+            <div className='max-w-[70%] w-full flex items-center flex-col'>
+                <div className='w-[10rem]'>
+                    <img src="./logo.png" className='object-fill rounded-full border' alt="" />
+                </div>
+                <div className='pt-10 text-2xl text-center flex flex-col gap-2'>
 
-            <div className='w-[10rem]'>
-                <img src="./logo.png" className='object-fill rounded-full border' alt="" />
+                    <div>{profile.username}</div>
+                    <div>{profile.email}</div>
+                    <div>({profile.elo})</div>
+                </div>
+                <div className='pt-5'>
+                    <SheetDemo userId={profile.id} />
+                </div>
+                <div className='w-full pt-10'>
+                    <h1 className='text-blue-500 font-bold text-2xl'>Match History</h1>
+                </div>
             </div>
-            <div className='pt-10 text-2xl text-center flex flex-col gap-2'>
-                <div>ELO: {profile.elo}</div>
-                <div>{profile.username}</div>
-                <div>{profile.email}</div>
-            </div>
-            <div className='pt-5'>
-                <SheetDemo userId={profile.id} />
-            </div>
+
         </main>
     );
 }
