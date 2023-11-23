@@ -41,7 +41,7 @@ function DashBoard() {
                     onClick={logOut}
                     className={cn(
                         buttonVariants({ variant: "link" }),
-                        "hover:bg-slate-200 hover:underline justify-start"
+                        "hover:bg-slate-200 hover:underline justify-start text-blue-500"
                     )}
                 >
                     Logout
