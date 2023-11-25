@@ -1,7 +1,9 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../shadcn/components/ui/button"
 import { Input } from "../shadcn/components/ui/input"
 import { Label } from "../shadcn/components/ui/label"
+import { useToast } from "../shadcn/components/ui/use-toast"
+
 import {
     Sheet,
     SheetContent,
@@ -17,6 +19,8 @@ import { supabase } from "../supabase/supabaseClient";
 export function SheetDemo(props: { userId: string }) {
     const [profile, setProfile] = useState<Profile>();
 
+    const { toast } = useToast()
+
     useEffect(() => {
         async function fetchProfile() {
             const { data } = await supabase
@@ -30,8 +34,8 @@ export function SheetDemo(props: { userId: string }) {
         fetchProfile();
     }, []);
 
-    const handleSaveChanges = async (e: FormEvent) => {
-        e.preventDefault(); // Prevent default form submission
+    const handleSaveChanges = async (e: any) => {
+        e.preventDefault();
 
         if (!profile) {
             console.error("Profile data is not loaded");
@@ -44,11 +48,17 @@ export function SheetDemo(props: { userId: string }) {
             .eq('id', profile.id);
 
         if (error) {
+            console.log(error);
             console.error('Error updating profile:', error);
+            toast({
+                title: "Error",
+                description: "Error updating profile, please try again later",
+                color: "red",
+            })
             return;
         }
+        window.location.reload();
 
-        console.log("Profile updated successfully");
     };
 
     return (

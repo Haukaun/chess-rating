@@ -1,30 +1,16 @@
-
-import { useEffect, useState } from "react";
 import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "../shadcn/components/ui/table"
-import { supabase } from "../supabase/supabaseClient";
 import { Profile } from "../interfaces/profile";
 
-export default function RatingTable() {
-    const [players, setPlayers] = useState<Profile[]>([]);
 
-    useEffect(() => {
-        async function fetchPlayers() {
-            let { data, error } = await supabase
-                .from('profiles')
-                .select('*')
-                .order('elo', { ascending: false });
+interface RatingTableProps {
+    props: Profile[];
+}
 
-            if (error) {
-                console.error(error);
-            } else {
-                setPlayers(data ?? []);
-            }
-        }
-        fetchPlayers();
-    }, []);
+
+export default function RatingTable({ props }: RatingTableProps) {
 
     return (
-        <div className="border rounded-lg w-full">
+        <div className="border rounded-lg w-full bg-secondary">
             <div className="relative w-full overflow-auto">
                 <Table>
                     <TableHeader>
@@ -35,7 +21,7 @@ export default function RatingTable() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {players.map((user, index) => (
+                        {props.map((user, index) => (
                             <TableRow key={user.id}>
                                 <TableCell className="font-medium">{user.username}</TableCell>
                                 <TableCell>{user.elo}</TableCell>

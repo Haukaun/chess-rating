@@ -13,6 +13,8 @@ import { supabase } from "../supabase/supabaseClient";
 import { Profile } from "../interfaces/profile";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../shadcn/components/ui/select";
 import { Separator } from "@radix-ui/react-select";
+import { useToast } from "../shadcn/components/ui/use-toast";
+
 
 
 
@@ -21,6 +23,8 @@ function GameDialog() {
     const [selectedWhite, setSelectedWhite] = useState('');
     const [selectedBlack, setSelectedBlack] = useState('');
     const [winner, setWinner] = useState('');
+
+    const { toast } = useToast()
 
     const currentWhiteElo = players?.find(player => player.id === selectedWhite)?.elo;
     const currentBlackElo = players?.find(player => player.id === selectedBlack)?.elo;
@@ -73,6 +77,20 @@ function GameDialog() {
     }
 
 
+    async function updatePlayerElo(playerId: string, newElo: number) {
+        const { data, error } = await supabase
+            .from('profiles')
+            .update({ elo: newElo })
+            .match({ id: playerId });
+
+        if (error) {
+            console.error('Error updating player elo:', error);
+            return null;
+        }
+
+        return data;
+    }
+
     async function insertGame(props: GameHistory) {
         const { data, error } = await supabase
             .from('game_history')
@@ -87,6 +105,11 @@ function GameDialog() {
             ]);
 
         if (error) {
+            toast({
+                title: "Error",
+                description: "Error inserting game, please try again later",
+                color: "red",
+            })
             console.error('Error inserting game:', error);
             return null;
         }
@@ -102,6 +125,11 @@ function GameDialog() {
 
             if (error) {
                 console.error(error);
+                toast({
+                    title: "Error",
+                    description: "Error updating profile, please try again later",
+                    color: "red",
+                })
             } else {
                 setPlayers(data ?? []);
             }
@@ -115,6 +143,24 @@ function GameDialog() {
 
         const { eloChangeWhite, eloChangeBlack } = calculateEloChanges(currentWhiteElo as number, currentBlackElo as number, winner);
 
+        if (selectedWhite.length === 0 || selectedBlack.length === 0 || !winner) {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Please select all fields",
+            })
+            return;
+        }
+
+        if (selectedWhite === selectedBlack) {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Please select different players",
+            })
+            return;
+        }
+
         await insertGame({
             white_player_id: selectedWhite,
             black_player_id: selectedBlack,
@@ -122,6 +168,12 @@ function GameDialog() {
             elo_change_white: eloChangeWhite,
             elo_change_black: eloChangeBlack
         });
+
+        await updatePlayerElo(selectedWhite, currentWhiteElo as number + eloChangeWhite);
+        await updatePlayerElo(selectedBlack, currentBlackElo as number + eloChangeBlack);
+
+        window.location.reload();
+
     };
 
     return (

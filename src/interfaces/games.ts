@@ -5,7 +5,7 @@ interface GameHistory {
   white_player_id: string;
   black_player_id: string;
   winner: string;
-  date_played?: string;
+  date_played?: Date;
   elo_change_white: number;
   elo_change_black: number;
 }

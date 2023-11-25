@@ -17,7 +17,7 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
     return (
         <nav
             className={cn(
-                "flex flex-col gap-3", // Legg til 'h-full' for å sikre at nav tar hele høyden
+                "flex flex-col gap-3",
                 className
             )}
             {...props}
