@@ -1,4 +1,3 @@
-import React from 'react'
 import { SingleElimination } from '../components/tournamentComponent'
 
 function Tournament() {
