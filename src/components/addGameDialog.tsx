@@ -17,6 +17,7 @@ import { useToast } from "../shadcn/components/ui/use-toast";
 
 interface PlayerProps {
     players: Profile[];
+    onNewGameAdded: (newGame: GameHistory) => void;
 }
 
 function GameDialog(props: PlayerProps) {
@@ -86,9 +87,9 @@ function GameDialog(props: PlayerProps) {
         if (error) {
             console.error('Error updating player elo:', error);
             toast({
+                variant: "destructive",
                 title: "Error",
                 description: "Error updating profile, please try again later",
-                color: "red",
             })
             return null;
         }
@@ -111,14 +112,13 @@ function GameDialog(props: PlayerProps) {
 
         if (error) {
             toast({
+                variant: "destructive",
                 title: "Error",
                 description: "Error inserting game, please try again later",
-                color: "red",
             })
             console.error('Error inserting game:', error);
             return null;
         }
-
         return data;
     }
 
@@ -153,8 +153,23 @@ function GameDialog(props: PlayerProps) {
             elo_change_black: eloChangeBlack
         });
 
+        props.onNewGameAdded({
+            white_player_id: selectedWhite,
+            black_player_id: selectedBlack,
+            winner: winner,
+            date_played: new Date(),
+            elo_change_white: eloChangeWhite,
+            elo_change_black: eloChangeBlack
+        });
+
         await updatePlayerElo(selectedWhite, currentWhiteElo as number + eloChangeWhite);
         await updatePlayerElo(selectedBlack, currentBlackElo as number + eloChangeBlack);
+
+        toast({
+            className: "bg-green-500 text-white",
+            title: "Success",
+            description: "Game added successfully",
+        })
 
     };
 

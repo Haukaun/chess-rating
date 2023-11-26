@@ -17,7 +17,7 @@ export default function RatingTable({ props }: RatingTableProps) {
                         <TableRow>
                             <TableHead className="w-[10rem]">Player Name</TableHead>
                             <TableHead>Elo Rating</TableHead>
-                            <TableHead>Rank</TableHead>
+                            <TableHead className="text-right">Rank</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -25,7 +25,7 @@ export default function RatingTable({ props }: RatingTableProps) {
                             <TableRow key={user.id}>
                                 <TableCell className="font-medium">{user.username}</TableCell>
                                 <TableCell>{user.elo}</TableCell>
-                                <TableCell>{index + 1}</TableCell>
+                                <TableCell className="text-right">{index + 1}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
