@@ -8,14 +8,15 @@ import { Profile } from "../interfaces/profile"
 function GameHistory() {
 
     const [gameHistory, setGameHistory] = useState<GameHistory[]>()
-    const [players, setPlayers] = useState<Profile[]>([]);
+    const [players, setPlayers] = useState<Profile[]>([])
 
     useEffect(() => {
         async function fetchPlayers() {
             let { data, error } = await supabase
                 .from('profiles')
                 .select('*')
-                .order('elo', { ascending: false });
+                .like('email', '%@safebase.no')
+                .order('elo', { ascending: false })
 
             if (error) {
                 console.error(error);
@@ -46,7 +47,7 @@ function GameHistory() {
         <main className="flex flex-col items-center justify-start pt-10 w-full pl-[15rem] min-h-screen">
             <div className='w-full max-w-[70%] text-3xl flex items-center justify-between my-5'>
                 <h1 className="text-2xl font-bold">Game History</h1>
-                <GameDialog />
+                <GameDialog players={players} />
             </div>
             <div className="w-full max-w-[70%] flex flex-col gap-5">
                 {gameHistory && gameHistory.map((game, index) => (

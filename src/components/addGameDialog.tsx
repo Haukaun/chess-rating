@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "../shadcn/components/ui/button"
 import {
     Dialog,
@@ -15,19 +15,19 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { Separator } from "@radix-ui/react-select";
 import { useToast } from "../shadcn/components/ui/use-toast";
 
+interface PlayerProps {
+    players: Profile[];
+}
 
-
-
-function GameDialog() {
-    const [players, setPlayers] = useState<Profile[]>();
+function GameDialog(props: PlayerProps) {
     const [selectedWhite, setSelectedWhite] = useState('');
     const [selectedBlack, setSelectedBlack] = useState('');
     const [winner, setWinner] = useState('');
 
     const { toast } = useToast()
 
-    const currentWhiteElo = players?.find(player => player.id === selectedWhite)?.elo;
-    const currentBlackElo = players?.find(player => player.id === selectedBlack)?.elo;
+    const currentWhiteElo = props.players?.find(player => player.id === selectedWhite)?.elo;
+    const currentBlackElo = props.players?.find(player => player.id === selectedBlack)?.elo;
 
     function calculateExpectedScore(playerRating: number, opponentRating: number) {
         return 1 / (1 + Math.pow(10, (opponentRating - playerRating) / 400));
@@ -85,6 +85,11 @@ function GameDialog() {
 
         if (error) {
             console.error('Error updating player elo:', error);
+            toast({
+                title: "Error",
+                description: "Error updating profile, please try again later",
+                color: "red",
+            })
             return null;
         }
 
@@ -116,27 +121,6 @@ function GameDialog() {
 
         return data;
     }
-
-    useEffect(() => {
-        const fetchPlayers = async () => {
-            let { data, error } = await supabase
-                .from('profiles')
-                .select('*')
-
-            if (error) {
-                console.error(error);
-                toast({
-                    title: "Error",
-                    description: "Error updating profile, please try again later",
-                    color: "red",
-                })
-            } else {
-                setPlayers(data ?? []);
-            }
-        };
-
-        fetchPlayers();
-    }, []);
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -201,7 +185,7 @@ function GameDialog() {
                                 <SelectContent>
                                     <SelectGroup >
                                         <SelectLabel>Player</SelectLabel>
-                                        {players?.map(player => (
+                                        {props.players?.map(player => (
                                             <SelectItem key={player.id} value={player.id}>
                                                 {player.username}
                                             </SelectItem>
@@ -225,7 +209,7 @@ function GameDialog() {
                                 <SelectContent>
                                     <SelectGroup >
                                         <SelectLabel>Player</SelectLabel>
-                                        {players?.map(player => (
+                                        {props.players?.map(player => (
                                             <SelectItem key={player.id} value={player.id}>
                                                 {player.username}
                                             </SelectItem>

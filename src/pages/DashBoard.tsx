@@ -22,8 +22,6 @@ const sidebarNavItems = [
     },
 ]
 
-
-
 function logOut() {
     supabase.auth.signOut();
 }

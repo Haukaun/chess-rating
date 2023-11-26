@@ -24,11 +24,18 @@ export default function BestPlayers({ players }: BestPlayersProps) {
                 <div className="space-y-3">
                     <h2 className="text-3xl font-bold tracking-tighter text-black sm:text-4xl md:text-5xl">Leaderboard</h2>
                 </div>
-                <div className="grid w-full gap-2 md:gap-6 md:grid-cols-3 lg:grid-cols-3">
+                <div className="md:grid w-full gap-2 md:gap-6 flex flex-col md:grid-cols-3">
                     {bestPlayers.map((player, index) => (
-                        <Card key={player.id} className={`${index === 0 ? 'bg-yellow-500' : 'bg-secondary'} md:col-start-${index === 0 ? 2 : index === 1 ? 1 : 3} md:row-start-${index === 0 ? 1 : 2} 
-                        animate-fade-up 
-                        animate-delay-[${index === 0 ? '1000ms' : ''}]`}>
+                        <Card
+                            key={player.id}
+                            className={`
+                            ${index === 0 ? 'bg-yellow-500' : 'bg-secondary'} 
+                            ${index === 0 ? 'col-start-2' : index === 1 ? 'col-start-1' : 'col-start-3'} 
+                            ${index === 0 ? 'row-start-1' : 'row-start-2'}
+                            animate-fade-up 
+                            animate-delay-[${index === 0 ? '1000ms' : ''}]
+                        `}
+                        >
                             <CardHeader className="flex flex-col items-center justify-center space-y-0">
                                 <div className="text-center">
                                     <CardTitle className={`${index === 0 ? 'text-white' : 'text-black'} text-sm font-bold`}>{player.username}</CardTitle>

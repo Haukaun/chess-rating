@@ -14,6 +14,7 @@ function LeaderBoard() {
             let { data, error } = await supabase
                 .from('profiles')
                 .select('*')
+                .like('email', '%@safebase.no')
                 .order('elo', { ascending: false });
 
             if (error) {
@@ -23,11 +24,6 @@ function LeaderBoard() {
                 setPlayers(data ?? []);
             }
         }
-
-
-
-        console.log(players)
-
         fetchPlayers();
     }, []);
 

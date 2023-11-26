@@ -8,6 +8,7 @@ const matches = [
         "nextMatchId": null, // Id for the nextMatch in the bracket, if it's final match it must be null OR undefined
         "tournamentRoundText": "4", // Text for Round Header
         "state": "DONE", // 'NO_SHOW' | 'WALK_OVER' | 'NO_PARTY' | 'DONE' | 'SCORE_DONE' Only needed to decide walkovers and if teamNames are TBD (to be decided)
+        "startTime": "", // Date object
         "participants": [
             {
                 "id": "c016cb2a-fdd9-4c40-a81f-0cc6bdf4b9cc", // Unique identifier of any kind
@@ -31,6 +32,7 @@ const matches = [
         "nextMatchId": 260005,
         "tournamentRoundText": "3",
         "state": "DONE",
+        "startTime": "", // Date object
         "participants": [
             {
                 "id": "c016cb2a-fdd9-4c40-a81f-0cc6bdf4b9cc",
@@ -54,6 +56,7 @@ const matches = [
         "nextMatchId": 260005,
         "tournamentRoundText": "3",
         "state": "DONE",
+        "startTime": "", // Date object
         "participants": [
             {
                 "id": "c016cb2a-fdd9-4c40-a81f-0cc6bdf4bd9cc",

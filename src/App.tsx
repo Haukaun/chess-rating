@@ -27,7 +27,7 @@ function App() {
 	}, []);
 
 
-	if (!session  /*!session.user.email?.match(/^[a-zA-Z0-9._%+-]+@safebase\.no$/)*/) {
+	if (!session || !session.user.email?.endsWith('@safebase.no')) {
 		return (
 			<div className="flex w-full items-center justify-center min-h-screen">
 				<div className="bg-form rounded-md w-full max-w-md p-10 shadow-2xl">
@@ -58,6 +58,9 @@ function App() {
 								},
 								label: {
 									color: 'grey'
+								},
+								message: {
+									color: 'red'
 								}
 							},
 						}}
