@@ -156,8 +156,6 @@ function GameDialog(props: PlayerProps) {
         await updatePlayerElo(selectedWhite, currentWhiteElo as number + eloChangeWhite);
         await updatePlayerElo(selectedBlack, currentBlackElo as number + eloChangeBlack);
 
-        window.location.reload();
-
     };
 
     return (
