@@ -5,8 +5,11 @@ import { SheetDemo } from '../components/editUserSheet';
 
 function ProfilePage() {
     const [profile, setProfile] = useState<Profile>();
-
     const [loading, setLoading] = useState(true);
+
+    const updateProfile = (updatedProfile: Profile) => {
+        setProfile(updatedProfile);
+    };
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -51,7 +54,7 @@ function ProfilePage() {
                     <div>({profile.elo})</div>
                 </div>
                 <div className='pt-5'>
-                    <SheetDemo userId={profile.id} />
+                    <SheetDemo player={profile} onUpdate={updateProfile} />
                 </div>
             </div>
 

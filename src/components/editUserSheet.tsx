@@ -16,23 +16,15 @@ import {
 import { Profile } from "../interfaces/profile";
 import { supabase } from "../supabase/supabaseClient";
 
-export function SheetDemo(props: { userId: string }) {
+export function SheetDemo(props: { player: Profile, onUpdate: (updatedProfile: Profile) => void }) {
+
     const [profile, setProfile] = useState<Profile>();
 
-    const { toast } = useToast()
-
     useEffect(() => {
-        async function fetchProfile() {
-            const { data } = await supabase
-                .from('profiles')
-                .select('*')
-                .eq('id', props.userId)
-                .single();
+        setProfile(props.player);
+    }, [props.player]);
 
-            setProfile(data);
-        }
-        fetchProfile();
-    }, []);
+    const { toast } = useToast()
 
     const handleSaveChanges = async (e: any) => {
         e.preventDefault();
@@ -57,8 +49,18 @@ export function SheetDemo(props: { userId: string }) {
             })
             return;
         }
-        window.location.reload();
 
+        if (!error) {
+            const updatedProfile = { ...props.player, username: profile?.username };
+            props.onUpdate(updatedProfile);
+
+            toast({
+                className: "bg-green-500 text-white",
+                title: "Success",
+                description: "Profile updated successfully",
+                color: "green",
+            });
+        }
     };
 
     return (
